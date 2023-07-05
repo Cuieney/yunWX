@@ -75,6 +75,31 @@ app.post("/api/receiveMessage", async (req, res) => {
   console.log('req', req.body)
   const appid = req.headers['x-wx-from-appid'] || ''
   const { Event, ToUserName, FromUserName, MsgType, Content, CreateTime } = req.body
+  if (MsgType === 'text') { 
+    if (Content.includes('卜卦')) {
+      res.send({
+        ToUserName: FromUserName,
+        FromUserName: ToUserName,
+        CreateTime: CreateTime,
+        MsgType: 'news',
+        ArticleCount: 1,
+        Articles: [{
+          Title: 'AI｜卜算子',
+          Description: '把握机遇，化解挑战，变化中求稳定，智慧中寻答案，点击开始起卦',
+          PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
+          Url: `${webUrl}?openId=${FromUserName}`
+        }]
+      })
+    } else {
+      res.send({
+        ToUserName: FromUserName,
+        FromUserName: ToUserName,
+        CreateTime: CreateTime,
+        MsgType: 'text',
+        Content: '客服正忙，稍后自动回复'
+      })
+    }
+  }
   if (Event === 'subscribe' && MsgType === 'event') {
     // const result = await sendMessage(FromUserName, appid)
     res.send({
