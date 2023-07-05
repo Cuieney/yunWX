@@ -53,7 +53,7 @@ app.post("/api/receiveMessage", async (req, res) => {
   console.log('req', req.body)
   res.send({
     code: 0,
-    data: result,
+    data: req.body,
   });
 })
 const port = process.env.PORT || 80;
