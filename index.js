@@ -62,7 +62,7 @@ const sendMessage = (from_appid) => {
         touser: from_appid, // 一般是消息推送body的FromUserName值，为用户的openid
         msgtype: "text",
         text: {
-          content: `点击链接进行访问：${webUrl}?openId=${from_appid}`
+          content: `欢迎关注Ai卜算子，点击链接开始卜卦：${webUrl}?openId=${from_appid}`
         }
       })
     },function (error, response) {
@@ -74,7 +74,7 @@ const sendMessage = (from_appid) => {
 app.post("/api/receiveMessage", async (req, res) => {
   console.log('req', req.body)
   const { FromUserName, Event, MsgType, MenuId }  = req.body
-  if (Event === 'VIEW' && MsgType === 'event' && MenuId === '566661148') {
+  if (Event === 'subscribe' && MsgType === 'event') {
     const result = await sendMessage(FromUserName)
     res.send({
       code: 0,
