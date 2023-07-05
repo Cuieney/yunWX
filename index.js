@@ -50,14 +50,14 @@ app.get("/api/wx_openid", async (req, res) => {
   }
 });
 
-const sendMessage = (from_appid) => {
+const sendMessage = (from_appid, appid) => {
   const request = require('request')
   return new Promise((resolve, reject) => {
     request({
       method: 'POST',
-      url: 'http://api.weixin.qq.com/cgi-bin/message/custom/send',
+      // url: 'http://api.weixin.qq.com/cgi-bin/message/custom/send',
       // 资源复用情况下，参数from_appid应写明发起方appid
-      // url: 'http://api.weixin.qq.com/cgi-bin/message/custom/send?from_appid=wxxxxx'
+      url: `http://api.weixin.qq.com/cgi-bin/message/custom/send?from_appid=${appid}`,
       body: JSON.stringify({
         touser: from_appid, // 一般是消息推送body的FromUserName值，为用户的openid
         msgtype: "text",
@@ -73,9 +73,10 @@ const sendMessage = (from_appid) => {
 }
 app.post("/api/receiveMessage", async (req, res) => {
   console.log('req', req.body)
-  const { ToUserName, FromUserName, MsgType, Content, CreateTime } = req.body
+  const appid = req.headers['x-wx-from-appid'] || ''
+  const { Event, ToUserName, FromUserName, MsgType, Content, CreateTime } = req.body
   if (Event === 'subscribe' && MsgType === 'event') {
-    // const result = await sendMessage(FromUserName)
+    // const result = await sendMessage(FromUserName, appid)
     res.send({
       ToUserName: FromUserName,
       FromUserName: ToUserName,
