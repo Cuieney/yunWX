@@ -75,10 +75,10 @@ app.post("/api/receiveMessage", async (req, res) => {
   console.log('req', req.body)
   const { FromUserName, Event, MsgType, MenuId }  = req.body
   if (Event === 'VIEW' && MsgType === 'event' && MenuId === '566661148') {
-    const res = await sendMessage(FromUserName)
+    const result = await sendMessage(FromUserName)
     res.send({
       code: 0,
-      data: res,
+      data: result,
     });
   } else {
     res.send({
