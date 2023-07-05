@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const { init: initDB, Counter } = require("./db");
 
 const logger = morgan("tiny");
+const webUrl ="https://yijing-8gk8qf01dc156952-1257934448.ap-shanghai.app.tcloudbase.com/#/"
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
@@ -49,12 +50,43 @@ app.get("/api/wx_openid", async (req, res) => {
   }
 });
 
+const sendMessage = (from_appid) => {
+  const request = require('request')
+  return new Promise((resolve, reject) => {
+    request({
+      method: 'POST',
+      url: 'http://api.weixin.qq.com/cgi-bin/message/custom/send',
+      // 资源复用情况下，参数from_appid应写明发起方appid
+      // url: 'http://api.weixin.qq.com/cgi-bin/message/custom/send?from_appid=wxxxxx'
+      body: JSON.stringify({
+        touser: from_appid, // 一般是消息推送body的FromUserName值，为用户的openid
+        msgtype: "text",
+        text: {
+          content: `点击链接进行访问：${webUrl}?openId=${from_appid}`
+        }
+      })
+    },function (error, response) {
+      console.log('接口返回内容', response.body)
+      resolve(JSON.parse(response.body))
+    })
+  })
+}
 app.post("/api/receiveMessage", async (req, res) => {
   console.log('req', req.body)
-  res.send({
-    code: 0,
-    data: req.body,
-  });
+  const { FromUserName, Event, MsgType, MenuId }  = req.body
+  if (Event === 'VIEW' && MsgType === 'event' && MenuId === '566661148') {
+    const res = await sendMessage(FromUserName)
+    res.send({
+      code: 0,
+      data: res,
+    });
+  } else {
+    res.send({
+      code: 0,
+      data: null,
+    });
+  }
+  
 })
 const port = process.env.PORT || 80;
 
