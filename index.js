@@ -49,6 +49,13 @@ app.get("/api/wx_openid", async (req, res) => {
   }
 });
 
+app.post("/api/receiveMessage", async (req, res) => {
+  console.log('req', req.body)
+  res.send({
+    code: 0,
+    data: result,
+  });
+})
 const port = process.env.PORT || 80;
 
 async function bootstrap() {
