@@ -6,7 +6,7 @@ const { init: initDB, Counter } = require("./db");
 
 const logger = morgan("tiny");
 const webUrl ="https://yijing-8gk8qf01dc156952-1257934448.ap-shanghai.app.tcloudbase.com/#/"
-import { Cloud } from "laf-client-sdk";
+const { Cloud } = require("laf-client-sdk");
 const cloud = new Cloud({
     baseUrl: "https://wt5iw4.laf.run",   // APPID 在首页应用列表获取
     getAccessToken: () => "",    // 这里不需要授权，先填空
