@@ -105,8 +105,10 @@ app.post("/api/receiveMessage", async (req, res) => {
     }
   }
   if (Event === 'subscribe' && MsgType === 'event') {
-    const res = await cloud.invoke('webLogin', {openid: FromUserName})
-    console.log('weblogin', res)
+    try{
+        const res = await cloud.invoke('webLogin', {openid: FromUserName})        
+        console.log('weblogin', res)
+    }catch(e){console.log(e)}
     res.send({
       ToUserName: FromUserName,
       FromUserName: ToUserName,
