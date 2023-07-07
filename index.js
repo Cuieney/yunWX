@@ -89,7 +89,7 @@ app.post("/api/receiveMessage", async (req, res) => {
         ArticleCount: 1,
         Articles: [{
           Title: 'AI｜卜算子',
-          Description: '把握机遇，化解挑战，变化中求稳定，智慧中寻答案，点击开始起卦',
+          Description: '点击开始起卦',
           PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
           Url: `${webUrl}?openId=${FromUserName}`
         }]
@@ -117,7 +117,7 @@ app.post("/api/receiveMessage", async (req, res) => {
       ArticleCount: 1,
       Articles: [{
         Title: 'AI｜卜算子',
-        Description: '把握机遇，化解挑战，变化中求稳定，智慧中寻答案，点击开始起卦',
+        Description: '点击开始起卦',
         PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
         Url: `${webUrl}?openId=${FromUserName}`
       }]
