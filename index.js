@@ -66,7 +66,7 @@ const sendMessage = (from_appid, appid) => {
         touser: from_appid, // 一般是消息推送body的FromUserName值，为用户的openid
         msgtype: "text",
         text: {
-          content: `欢迎关注Ai卜算子，点击链接开始卜卦：${webUrl}?openId=${from_appid}`
+          content: `欢迎关注Ai卜卦，点击链接开始卜卦：${webUrl}?openId=${from_appid}`
         }
       })
     },function (error, response) {
@@ -88,7 +88,7 @@ app.post("/api/receiveMessage", async (req, res) => {
         MsgType: 'news',
         ArticleCount: 1,
         Articles: [{
-          Title: 'AI｜卜算子',
+          Title: 'AI｜卜卦',
           Description: '点击开始起卦',
           PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
           Url: `${webUrl}?openId=${FromUserName}`
@@ -116,7 +116,7 @@ app.post("/api/receiveMessage", async (req, res) => {
       MsgType: 'news',
       ArticleCount: 1,
       Articles: [{
-        Title: 'AI｜卜算子',
+        Title: 'AI｜卜卦',
         Description: '点击开始起卦',
         PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
         Url: `${webUrl}?openId=${FromUserName}`
