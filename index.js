@@ -75,6 +75,21 @@ const sendMessage = (from_appid, appid) => {
     })
   })
 }
+const weblogin = (from_appid) => {
+  const request = require('request')
+  return new Promise((resolve, reject) => {
+    request({
+      method: 'POST',
+      url: `https://wt5iw4.laf.run/getAiCount`,
+      body: JSON.stringify({
+        openid:`${from_appid}`
+      })
+    },function (error, response) {
+      console.log('接口返回内容', response.body, error)
+      resolve(JSON.parse(response.body))
+    })
+  })
+}
 app.post("/api/receiveMessage", async (req, res) => {
   console.log('req', req.body)
   const appid = req.headers['x-wx-from-appid'] || ''
@@ -106,7 +121,7 @@ app.post("/api/receiveMessage", async (req, res) => {
   }
   if (Event === 'subscribe' && MsgType === 'event') {
     try{
-        const res = await cloud.invoke('webLogin', {openid: FromUserName})        
+        const res = await weblogin(FromUserName)        
         console.log('weblogin', res)
     }catch(e){console.log(e)}
     res.send({
