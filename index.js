@@ -81,9 +81,9 @@ const weblogin = (from_appid) => {
     request({
       method: 'POST',
       url: `https://wt5iw4.laf.run/getAiCount`,
-      body: JSON.stringify({
+      body: {
         openid:`${from_appid}`
-      })
+      }
     },function (error, response) {
       console.log('接口返回内容', response.body, error)
       resolve(JSON.parse(response.body))
