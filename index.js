@@ -107,7 +107,7 @@ app.post("/api/receiveMessage", async (req, res) => {
         ArticleCount: 1,
         Articles: [{
           Title: 'AI｜卜卦',
-          Description: '点击开始起卦',
+          Description: '点击开始起卦占卜',
           PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
           Url: `${webUrl}?openId=${FromUserName}`
         }]
@@ -135,7 +135,7 @@ app.post("/api/receiveMessage", async (req, res) => {
       ArticleCount: 1,
       Articles: [{
         Title: 'AI｜卜卦',
-        Description: '点击开始起卦',
+        Description: '点击开始起卦占卜',
         PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
         Url: `${webUrl}?openId=${FromUserName}`
       }]
