@@ -22,31 +22,6 @@ app.get("/", async (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// 更新计数
-app.post("/api/count", async (req, res) => {
-  const { action } = req.body;
-  if (action === "inc") {
-    await Counter.create();
-  } else if (action === "clear") {
-    await Counter.destroy({
-      truncate: true,
-    });
-  }
-  res.send({
-    code: 0,
-    data: await Counter.count(),
-  });
-});
-
-// 获取计数
-app.get("/api/count", async (req, res) => {
-  const result = await Counter.count();
-  res.send({
-    code: 0,
-    data: result,
-  });
-});
-
 // 小程序调用，获取微信 Open ID
 app.get("/api/wx_openid", async (req, res) => {
   if (req.headers["x-wx-source"]) {
@@ -107,7 +82,7 @@ app.post("/api/receiveMessage", async (req, res) => {
         ArticleCount: 1,
         Articles: [{
           Title: 'AI｜卜卦',
-          Description: '点击开始起卦占卜',
+          Description: '点击卡片开始起卦占卜',
           PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
           Url: `${webUrl}?openId=${FromUserName}`
         }]
@@ -135,7 +110,7 @@ app.post("/api/receiveMessage", async (req, res) => {
       ArticleCount: 1,
       Articles: [{
         Title: 'AI｜卜卦',
-        Description: '点击开始起卦占卜',
+        Description: '点击卡片开始起卦占卜',
         PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
         Url: `${webUrl}?openId=${FromUserName}`
       }]
