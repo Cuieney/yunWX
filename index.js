@@ -53,8 +53,8 @@ const sendMessage = (from_appid, content) => {
 }
 app.post("/api/sendMessage", async (req, res) => {
   const { from_appid, content } = req.body
-  const result = await sendMessage(from_appid, content)
-  res.send(result)
+  const result1 = await sendMessage(from_appid, content)
+  res.send(result1)
 });
 const weblogin = (from_appid) => {
   const request = require('request')
