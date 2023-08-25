@@ -85,6 +85,7 @@ const weblogin = (from_appid) => {
     }
   })
 }
+
 app.post("/api/receiveMessage", async (req, res) => {
   console.log('req', req.body)
   const appid = req.headers['x-wx-from-appid'] || ''
@@ -116,6 +117,20 @@ app.post("/api/receiveMessage", async (req, res) => {
           Description: '点击卡片查看人工Ai卜卦中的解卦流程',
           PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
           Url: `https://mp.weixin.qq.com/s?__biz=MzAwNzE2MDA5Ng==&mid=2448904174&idx=1&sn=2ca75806cc5adf7fc6065dafc8998faf&chksm=8f0187a1b8760eb7a9e725751333ff3db363b201477ba87c596129158926537498c0048c7dc8#rd`
+        }]
+      })
+    } else if (Content.includes('进度')) {
+      res.send({
+        ToUserName: FromUserName,
+        FromUserName: ToUserName,
+        CreateTime: CreateTime,
+        MsgType: 'news',
+        ArticleCount: 1,
+        Articles: [{
+          Title: 'AI｜解卦进度',
+          Description: '点击卡片查看当前进度',
+          PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
+          Url: `${webUrl}pages/explainCursor/explainCursor`
         }]
       })
     } else {
