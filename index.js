@@ -29,19 +29,20 @@ app.get("/api/wx_openid", async (req, res) => {
   }
 });
 
-const sendMessage = (from_appid, appid) => {
+
+const sendMessage = (from_appid, content) => {
   const request = require('request')
   return new Promise((resolve, reject) => {
     request({
       method: 'POST',
       // url: 'http://api.weixin.qq.com/cgi-bin/message/custom/send',
       // 资源复用情况下，参数from_appid应写明发起方appid
-      url: `http://api.weixin.qq.com/cgi-bin/message/custom/send?from_appid=${appid}`,
+      url: `http://api.weixin.qq.com/cgi-bin/message/custom/send?from_appid=gh_b670d15d4ec4`,
       body: JSON.stringify({
         touser: from_appid, // 一般是消息推送body的FromUserName值，为用户的openid
         msgtype: "text",
         text: {
-          content: `欢迎关注Ai卜卦，点击链接开始卜卦：${webUrl}?openId=${from_appid}`
+          content
         }
       })
     },function (error, response) {
@@ -50,22 +51,37 @@ const sendMessage = (from_appid, appid) => {
     })
   })
 }
+app.post("/api/sendMessage", async (req, res) => {
+  const { from_appid, content } = req.body
+  const res = await sendMessage(from_appid, content)
+  res.send(res)
+});
 const weblogin = (from_appid) => {
   const request = require('request')
   return new Promise((resolve, reject) => {
-    request({
-      method: 'POST',
-      url: `https://wt5iw4.laf.run/getAiCount`,
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        openid:`${from_appid}`
+    try {
+      request({
+        method: 'POST',
+        url: `https://wt5iw4.laf.run/getAiCount`,
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          openid:`${from_appid}`
+        })
+      },function (error, response) {
+        console.log('接口返回内容', response.body, error)
+        resolve({
+          success: true,
+          message: JSON.parse(response.body)
+        })
       })
-    },function (error, response) {
-      console.log('接口返回内容', response.body, error)
-      resolve(JSON.parse(response.body))
-    })
+    } catch (error) {
+      reject({
+        success: false,
+        message: `${error}`
+      })
+    }
   })
 }
 app.post("/api/receiveMessage", async (req, res) => {
