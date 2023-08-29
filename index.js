@@ -35,9 +35,9 @@ const sendMessage = (from_appid, content) => {
   return new Promise((resolve, reject) => {
     request({
       method: 'POST',
-      // url: 'http://api.weixin.qq.com/cgi-bin/message/custom/send',
+      url: 'http://api.weixin.qq.com/cgi-bin/message/custom/send',
       // 资源复用情况下，参数from_appid应写明发起方appid
-      url: `http://api.weixin.qq.com/cgi-bin/message/custom/send?from_appid=gh_b670d15d4ec4`,
+      // url: `http://api.weixin.qq.com/cgi-bin/message/custom/send?from_appid=gh_b670d15d4ec4`,
       body: JSON.stringify({
         touser: from_appid, // 一般是消息推送body的FromUserName值，为用户的openid
         msgtype: "text",
