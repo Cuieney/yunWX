@@ -2,15 +2,10 @@ const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
-const { init: initDB, Counter } = require("./db");
-
+const { init: initDB, Counter, createQueue } = require("./db");
+// const axios = require('axios')
 const logger = morgan("tiny");
 const webUrl ="https://yijing-8gk8qf01dc156952-1257934448.ap-shanghai.app.tcloudbase.com/#/"
-const { Cloud } = require("laf-client-sdk");
-const cloud = new Cloud({
-    baseUrl: "https://wt5iw4.laf.run",   // APPID 在首页应用列表获取
-    getAccessToken: () => "",    // 这里不需要授权，先填空
-})
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -28,7 +23,6 @@ app.get("/api/wx_openid", async (req, res) => {
     res.send(req.headers["x-wx-openid"]);
   }
 });
-
 
 const sendMessage = (from_appid, content) => {
   const request = require('request')
@@ -119,21 +113,49 @@ app.post("/api/receiveMessage", async (req, res) => {
           Url: `https://mp.weixin.qq.com/s?__biz=MzAwNzE2MDA5Ng==&mid=2448904174&idx=1&sn=2ca75806cc5adf7fc6065dafc8998faf&chksm=8f0187a1b8760eb7a9e725751333ff3db363b201477ba87c596129158926537498c0048c7dc8#rd`
         }]
       })
-    } else if (Content.includes('进度')) {
-      res.send({
-        ToUserName: FromUserName,
-        FromUserName: ToUserName,
-        CreateTime: CreateTime,
-        MsgType: 'news',
-        ArticleCount: 1,
-        Articles: [{
-          Title: 'AI｜解卦进度',
-          Description: '点击卡片查看当前进度',
-          PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
-          Url: `${webUrl}pages/explainCursor/explainCursor`
-        }]
-      })
-    } else {
+    } 
+    // else if (Content.includes('进度')) {
+    //   res.send({
+    //     ToUserName: FromUserName,
+    //     FromUserName: ToUserName,
+    //     CreateTime: CreateTime,
+    //     MsgType: 'news',
+    //     ArticleCount: 1,
+    //     Articles: [{
+    //       Title: 'AI｜解卦进度',
+    //       Description: '点击卡片查看当前进度',
+    //       PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
+    //       Url: `${webUrl}pages/explainCursor/explainCursor`
+    //     }]
+    //   })
+    // } else if (Content.includes('取号')) {
+    //   const request = require('request')
+    //   axios.post('https://wt5iw4.laf.run/getExplainCursor')
+    //   .then(res => {
+
+    //   }, error => {
+        
+    //   })
+    //   request({
+    //     method: 'GET',
+    //     url: `https://wt5iw4.laf.run/getExplainCursor`,
+    //     headers: {
+    //       "content-type": "application/json",
+    //     },async function (error, response) {
+    //       console.log('接口返回内容', response.body, error)
+    //       resolve({
+    //         success: true,
+    //         message: JSON.parse(response.body)
+    //       })
+    //       const res = await createQueue(FromUserName, JSON.parse(response.body).data)
+    //       return {
+    //         code: 200,
+    //         result: res,
+    //       }
+    //     }
+    //   })
+    // } 
+    else {
       res.send({
         ToUserName: FromUserName,
         FromUserName: ToUserName,
@@ -172,7 +194,7 @@ app.post("/api/receiveMessage", async (req, res) => {
 const port = process.env.PORT || 80;
 
 async function bootstrap() {
-  // await initDB();
+  await initDB();
   app.listen(port, () => {
     console.log("启动成功", port);
   });
