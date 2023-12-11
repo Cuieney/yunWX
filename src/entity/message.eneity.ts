@@ -40,6 +40,7 @@ export class Message {
   @Column({
     type: 'text',
     name: 'Content',
+    nullable: true,
   })
   Content: string;
 
