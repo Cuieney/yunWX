@@ -31,7 +31,7 @@ export default (appInfo: MidwayAppInfo) => {
       },
     },
     egg: {
-      port: process.env.PORT || 80,
+      port: 8080,
     },
   } as MidwayConfig;
 };
