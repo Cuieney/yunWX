@@ -16,10 +16,10 @@ export default (appInfo: MidwayAppInfo) => {
       dataSource: {
         default: {
           type: 'mysql',
-          host: 'sh-cynosdbmysql-grp-9vgzkja4.sql.tencentcdb.com',
-          port: 23024,
-          // host: '10.37.110.35',
-          // port: 3306,
+          // host: 'sh-cynosdbmysql-grp-9vgzkja4.sql.tencentcdb.com',
+          // port: 23024,
+          host: '10.37.110.35',
+          port: 3306,
           username: 'root',
           password: 'Cui221107',
           database: 'iching',
