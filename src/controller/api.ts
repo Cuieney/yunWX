@@ -4,6 +4,7 @@ import { MessageService } from '../service/message.service';
 import { UserService } from '../service/user.service';
 import { WebUrl } from '../common/const';
 import { email } from '../utils/index';
+import { ILogger } from '@midwayjs/logger';
 
 @Controller('/api')
 export class APIController {
@@ -16,6 +17,8 @@ export class APIController {
   @Inject()
   user: UserService;
 
+  @Inject()
+  logger: ILogger;
   @Get('/wx_openid')
   async openid() {
     const appid = this.ctx.request.headers['x-wx-from-appid'] || '';
@@ -37,6 +40,7 @@ export class APIController {
   async receiveMessage(@Body() message: any) {
     const { Event, ToUserName, FromUserName, MsgType, Content, CreateTime } =
       message;
+    this.logger.info('receiveMessage', JSON.stringify(message));
     try {
       await this.message.saveMessage(message);
     } catch (e) {
@@ -63,7 +67,7 @@ export class APIController {
         try {
           await email(`${FromUserName}:${Content}`);
         } catch (error) {
-          console.log('mail error', error.message);
+          this.logger.error('mail error', error.message);
         }
         return {
           ToUserName: FromUserName,
@@ -79,7 +83,7 @@ export class APIController {
       try {
         await this.user.saveUser(FromUserName, true);
       } catch (e) {
-        console.log('user subscribe error', e);
+        this.logger.error('user subscribe error', e);
       }
       return {
         ToUserName: FromUserName,
@@ -102,7 +106,7 @@ export class APIController {
       try {
         result = await this.user.saveUser(FromUserName, false);
       } catch (e) {
-        console.log('user unsubscribe', e.message);
+        this.logger.error('user unsubscribe', e.message);
       }
       return { success: true, message: 'OK', data: result };
     }
