@@ -47,7 +47,11 @@ export class APIController {
       console.log('user receiveMessage error', e.message);
     }
     if (MsgType === 'text') {
-      if (Content.includes('卜卦') || Content.includes('占卜')) {
+      if (
+        Content.includes('卜') ||
+        Content.includes('卜卦') ||
+        Content.includes('占卜')
+      ) {
         return {
           ToUserName: FromUserName,
           FromUserName: ToUserName,
