@@ -49,6 +49,7 @@ export class APIController {
     if (MsgType === 'text') {
       if (
         Content.includes('卜') ||
+        Content.includes('卦') ||
         Content.includes('卜卦') ||
         Content.includes('占卜')
       ) {
@@ -69,7 +70,7 @@ export class APIController {
         };
       } else {
         try {
-          await email(`${FromUserName}:${Content}`);
+          await email(`公众号用户${FromUserName}反馈:${Content}`);
         } catch (error) {
           this.logger.error('mail error', error.message);
         }
