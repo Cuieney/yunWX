@@ -80,7 +80,7 @@ export class APIController {
           CreateTime: CreateTime,
           MsgType: 'text',
           Content:
-            '客服当前不在线，稍后自动回复，如有事情咨询请发送邮件至【aiiching@163.com】邮箱',
+            '客服当前不在线，稍后自动回复，如有事情咨询请发送邮件至【aiiching@163.com】邮箱，回复【卜卦】关键字可获得占卜页面。',
         };
       }
     }
