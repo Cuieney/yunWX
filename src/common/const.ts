@@ -1,2 +1,2 @@
 export const WebUrl =
-  'https://yijing-8gk8qf01dc156952-1257934448.ap-shanghai.app.tcloudbase.com/#/';
+  'https://aiiching-6gzxx8e54b53b190-1257934448.ap-shanghai.app.tcloudbase.com/#/';
