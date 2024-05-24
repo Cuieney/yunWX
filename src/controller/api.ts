@@ -53,28 +53,28 @@ export class APIController {
         Content.includes('卜卦') ||
         Content.includes('占卜')
       ) {
-        // return {
-        //   ToUserName: FromUserName,
-        //   FromUserName: ToUserName,
-        //   CreateTime: CreateTime,
-        //   MsgType: 'news',
-        //   ArticleCount: 1,
-        //   Articles: [
-        //     {
-        //       Title: 'AI｜卜卦',
-        //       Description: '点击卡片开始起卦占卜',
-        //       PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
-        //       Url: `${WebUrl}?openId=${FromUserName}`,
-        //     },
-        //   ],
-        // };
         return {
           ToUserName: FromUserName,
           FromUserName: ToUserName,
           CreateTime: CreateTime,
-          MsgType: 'text',
-          Content: `感谢您的使用，由于当前页面遭到用户的举报将无法在微信环境内打开。可通过复制链接在浏览器内打开：${WebUrl}?openId=${FromUserName}`,
+          MsgType: 'news',
+          ArticleCount: 1,
+          Articles: [
+            {
+              Title: 'AI｜卜卦',
+              Description: '点击卡片开始起卦占卜',
+              PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
+              Url: `${WebUrl}?openId=${FromUserName}`,
+            },
+          ],
         };
+        // return {
+        //   ToUserName: FromUserName,
+        //   FromUserName: ToUserName,
+        //   CreateTime: CreateTime,
+        //   MsgType: 'text',
+        //   Content: `感谢您的使用，由于当前页面遭到用户的举报将无法在微信环境内打开。可通过复制链接在浏览器内打开：${WebUrl}?openId=${FromUserName}`,
+        // };
       } else {
         try {
           await email(`公众号用户${FromUserName}反馈:${Content}`);
