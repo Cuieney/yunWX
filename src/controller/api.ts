@@ -53,6 +53,24 @@ export class APIController {
         Content.includes('卜卦') ||
         Content.includes('占卜')
       ) {
+        this.logger.info(
+          'responseMessage',
+          JSON.stringify({
+            ToUserName: FromUserName,
+            FromUserName: ToUserName,
+            CreateTime: CreateTime,
+            MsgType: 'news',
+            ArticleCount: 1,
+            Articles: [
+              {
+                Title: 'AI｜卜卦',
+                Description: '点击卡片开始起卦占卜',
+                PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
+                Url: `${WebUrl}?openId=${FromUserName}`,
+              },
+            ],
+          })
+        );
         return {
           ToUserName: FromUserName,
           FromUserName: ToUserName,
