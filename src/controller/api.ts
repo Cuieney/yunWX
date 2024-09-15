@@ -1,21 +1,22 @@
 import { Inject, Controller, Post, Get, Body } from '@midwayjs/core';
 import { Context } from '@midwayjs/web';
-import { MessageService } from '../service/message.service';
-import { UserService } from '../service/user.service';
+// import { MessageService } from '../servicedsad/message.service';
+// import { UserService } from '../servicedsad/user.service';
 import { WebUrl } from '../common/const';
 import { email } from '../utils/index';
 import { ILogger } from '@midwayjs/logger';
+const axios = require('axios');
 
 @Controller('/api')
 export class APIController {
   @Inject()
   ctx: Context;
 
-  @Inject()
-  message: MessageService;
+  // @Inject()
+  // message: MessageService;
 
-  @Inject()
-  user: UserService;
+  // @Inject()
+  // user: UserService;
 
   @Inject()
   logger: ILogger;
@@ -47,6 +48,7 @@ export class APIController {
     // } catch (e) {
     //   console.log('user receiveMessage error', e.message);
     // }
+
     if (MsgType === 'text') {
       if (
         Content.includes('卜') ||
@@ -111,6 +113,21 @@ export class APIController {
       }
     }
     if (Event === 'subscribe' && MsgType === 'event') {
+      this.logger.info(
+        "Event === 'subscribe' && MsgType === 'event'",
+        Event === 'subscribe' && MsgType === 'event'
+      );
+      try {
+        const response = await axios.post(
+          'https://wt5iw4.laf.run/gongzhonghaologin',
+          {
+            openid: FromUserName,
+          }
+        );
+        this.logger.info('POST Response:', response.data);
+      } catch (error) {
+        this.logger.info('Error with POST request:', error);
+      }
       // try {
       //   await this.user.saveUser(FromUserName, true);
       // } catch (e) {
