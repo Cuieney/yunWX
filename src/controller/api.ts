@@ -27,13 +27,14 @@ export class APIController {
 
   @Get('/getAllUser')
   async getAllUser() {
-    const all = await this.user.findAll();
-    return { success: true, message: 'OK', data: all };
+    // const all = await this.user.findAll();
+    return { success: true, message: 'OK', data: null };
   }
 
   @Get('/getAllMessage')
   async getAllMessage() {
-    const all = await this.message.findAll();
+    // const all = await this.message.findAll();
+    const all = null;
     return { success: true, message: 'OK', data: all };
   }
   @Post('/receiveMessage')
@@ -41,11 +42,11 @@ export class APIController {
     const { Event, ToUserName, FromUserName, MsgType, Content, CreateTime } =
       message;
     this.logger.info('receiveMessage', JSON.stringify(message));
-    try {
-      await this.message.saveMessage(message);
-    } catch (e) {
-      console.log('user receiveMessage error', e.message);
-    }
+    // try {
+    //   await this.message.saveMessage(message);
+    // } catch (e) {
+    //   console.log('user receiveMessage error', e.message);
+    // }
     if (MsgType === 'text') {
       if (
         Content.includes('卜') ||
@@ -110,11 +111,11 @@ export class APIController {
       }
     }
     if (Event === 'subscribe' && MsgType === 'event') {
-      try {
-        await this.user.saveUser(FromUserName, true);
-      } catch (e) {
-        this.logger.error('user subscribe error', e);
-      }
+      // try {
+      //   await this.user.saveUser(FromUserName, true);
+      // } catch (e) {
+      //   this.logger.error('user subscribe error', e);
+      // }
       return {
         ToUserName: FromUserName,
         FromUserName: ToUserName,
@@ -132,12 +133,12 @@ export class APIController {
       };
     }
     if (Event === 'unsubscribe' && MsgType === 'event') {
-      let result = null;
-      try {
-        result = await this.user.saveUser(FromUserName, false);
-      } catch (e) {
-        this.logger.error('user unsubscribe', e.message);
-      }
+      const result = null;
+      // try {
+      //   result = await this.user.saveUser(FromUserName, false);
+      // } catch (e) {
+      //   this.logger.error('user unsubscribe', e.message);
+      // }
       return { success: true, message: 'OK', data: result };
     }
     return { success: true, message: 'OK', data: message };

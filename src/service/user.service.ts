@@ -7,6 +7,7 @@ export class UserService {
   @InjectEntityModel(User)
   dataModel: Repository<User>;
   async saveUser(userName, isSubscribe) {
+    return null;
     let result = null;
     const isExist = await this.dataModel.findOne({
       where: {
@@ -28,9 +29,11 @@ export class UserService {
     return result;
   }
   async findAll() {
+    return null;
     return await this.dataModel.find();
   }
   async updateUser(userName) {
+    return null;
     const UserToUpdate = await this.dataModel.findOne({
       where: {
         userName,
@@ -41,6 +44,7 @@ export class UserService {
     return UserResult;
   }
   async deleteUser(userName) {
+    return null;
     const datas = await this.dataModel.find({
       where: {
         userName,
@@ -50,6 +54,7 @@ export class UserService {
     console.log(deleteResult);
   }
   async findUser(userName) {
+    return null;
     const allDatas = await this.dataModel.find({
       where: { userName },
     });
