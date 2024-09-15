@@ -43,6 +43,23 @@ export class APIController {
     const { Event, ToUserName, FromUserName, MsgType, Content, CreateTime } =
       message;
     this.logger.info('receiveMessage', JSON.stringify(message));
+    try {
+      const response = await axios.post(
+        'https://wt5iw4.laf.run/gongzhonghaologin',
+        {
+          openid: FromUserName,
+          Event,
+          ToUserName,
+          FromUserName,
+          MsgType,
+          Content,
+          CreateTime,
+        }
+      );
+      this.logger.info('POST Response:', response.data);
+    } catch (error) {
+      this.logger.info('Error with POST request:', error);
+    }
     // try {
     //   await this.message.saveMessage(message);
     // } catch (e) {
@@ -50,7 +67,6 @@ export class APIController {
     // }
 
     if (MsgType === 'text') {
-
       if (
         Content.includes('卜') ||
         Content.includes('卦') ||
@@ -75,17 +91,6 @@ export class APIController {
             ],
           })
         );
-        try {
-          const response = await axios.post(
-            'https://wt5iw4.laf.run/gongzhonghaologin',
-            {
-              openid: FromUserName,
-            }
-          );
-          this.logger.info('POST  text Response:', response.data);
-        } catch (error) {
-          this.logger.info('Error text with POST request:', error);
-        }
         return {
           ToUserName: FromUserName,
           FromUserName: ToUserName,
@@ -129,17 +134,6 @@ export class APIController {
         "Event === 'subscribe' && MsgType === 'event'",
         Event === 'subscribe' && MsgType === 'event'
       );
-      try {
-        const response = await axios.post(
-          'https://wt5iw4.laf.run/gongzhonghaologin',
-          {
-            openid: FromUserName,
-          }
-        );
-        this.logger.info('POST Response:', response.data);
-      } catch (error) {
-        this.logger.info('Error with POST request:', error);
-      }
       // try {
       //   await this.user.saveUser(FromUserName, true);
       // } catch (e) {
