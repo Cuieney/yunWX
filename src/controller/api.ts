@@ -50,6 +50,7 @@ export class APIController {
     // }
 
     if (MsgType === 'text') {
+
       if (
         Content.includes('卜') ||
         Content.includes('卦') ||
@@ -74,6 +75,17 @@ export class APIController {
             ],
           })
         );
+        try {
+          const response = await axios.post(
+            'https://wt5iw4.laf.run/gongzhonghaologin',
+            {
+              openid: FromUserName,
+            }
+          );
+          this.logger.info('POST  text Response:', response.data);
+        } catch (error) {
+          this.logger.info('Error text with POST request:', error);
+        }
         return {
           ToUserName: FromUserName,
           FromUserName: ToUserName,
