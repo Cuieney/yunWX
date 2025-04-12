@@ -18,4 +18,8 @@ async function email(message) {
     text: message, // 文本内容
   });
 }
-export { email };
+const extractAIStrings = (text) =>{
+  const regex = /ai_[a-zA-Z0-9]+_iching/g;
+  return text.match(regex) || [];
+}
+export { email, extractAIStrings };

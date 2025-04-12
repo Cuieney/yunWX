@@ -3,7 +3,7 @@ import { Context } from '@midwayjs/web';
 // import { MessageService } from '../servicedsad/message.service';
 // import { UserService } from '../servicedsad/user.service';
 import { WebUrl } from '../common/const';
-import { email } from '../utils/index';
+import { email, extractAIStrings } from '../utils/index';
 import { ILogger } from '@midwayjs/logger';
 const axios = require('axios');
 
@@ -25,6 +25,7 @@ export class APIController {
     const appid = this.ctx.request.headers['x-wx-from-appid'] || '';
     return { success: true, message: 'OK', data: appid };
   }
+
 
   @Get('/getAllUser')
   async getAllUser() {
@@ -67,7 +68,96 @@ export class APIController {
     // }
 
     if (MsgType === 'text') {
-      if (
+      let inviteIdList = []
+      try {
+        inviteIdList = extractAIStrings(Content)
+      } catch (error) {
+        this.logger.info('extractAIStrings error:', error.message);
+      }
+    
+      if (inviteIdList && inviteIdList.length > 0) {
+        const inviteId = inviteIdList[0]
+        this.logger.info('extractAIStrings success:', inviteId);
+
+        try {
+          const response = await axios.post(
+            'https://wt5iw4.laf.run/addInviteUser',
+            {
+              openid: FromUserName,
+              inviteId
+            }
+          );
+          this.logger.info('POST invite Response:', response.data);
+          if (response.data.code === 200) {
+            this.logger.info(
+              'invite responseMessage',
+              JSON.stringify({
+                ToUserName: FromUserName,
+                FromUserName: ToUserName,
+                CreateTime: CreateTime,
+                MsgType: 'news',
+                ArticleCount: 1,
+                Articles: [
+                  {
+                    Title: 'AI｜点击开始卜卦',
+                    Description: `${response.data.message}`,
+                    PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
+                    Url: `${WebUrl}?openId=${FromUserName}`,
+                  },
+                ],
+              })
+            );
+            return  {
+              ToUserName: FromUserName,
+              FromUserName: ToUserName,
+              CreateTime: CreateTime,
+              MsgType: 'news',
+              ArticleCount: 1,
+              Articles: [
+                {
+                  Title: 'AI｜点击此处开始卜卦',
+                  Description: `${response.data.message}`,
+                  PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
+                  Url: `${WebUrl}?openId=${FromUserName}`,
+                },
+              ],
+            }
+          } else {
+            this.logger.info(
+              'invite responseMessage',
+              JSON.stringify({
+                ToUserName: FromUserName,
+                FromUserName: ToUserName,
+                CreateTime: CreateTime,
+                MsgType: 'text',
+                Content:`${response.data.message}`,
+              })
+            );
+            return {
+              ToUserName: FromUserName,
+              FromUserName: ToUserName,
+              CreateTime: CreateTime,
+              MsgType: 'text',
+              Content:`${response.data.message}`,
+            };
+          }
+          
+        } catch (error) {
+          try {
+            await email(`云托管公众号：${FromUserName}-${inviteId}绑定数据异常：${error.message}`);
+          } catch (error) {
+            this.logger.error('mail error', error.message);
+          }
+          this.logger.info('Error invite with POST request:', error.message);
+          return {
+            ToUserName: FromUserName,
+            FromUserName: ToUserName,
+            CreateTime: CreateTime,
+            MsgType: 'text',
+            Content:`出现未知错误，给您带来了不便，感谢您的使用，管理员收到通知后将很快为您处理！`,
+          };
+        }
+      } else if (
         Content.includes('卜') ||
         Content.includes('卦') ||
         Content.includes('卜卦') ||
@@ -84,7 +174,7 @@ export class APIController {
             Articles: [
               {
                 Title: 'AI｜卜卦',
-                Description: '点击卡片开始起卦占卜',
+                Description: '点击此处开始起卦占卜',
                 PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
                 Url: `${WebUrl}?openId=${FromUserName}`,
               },
@@ -100,7 +190,7 @@ export class APIController {
           Articles: [
             {
               Title: 'AI｜卜卦',
-              Description: '点击卡片开始起卦占卜',
+              Description: '点击此处开始起卦占卜',
               PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
               Url: `${WebUrl}?openId=${FromUserName}`,
             },
@@ -115,7 +205,7 @@ export class APIController {
         // };
       } else {
         try {
-          await email(`公众号用户${FromUserName}反馈:${Content}`);
+          await email(`云托管公众号：${FromUserName}反馈：${Content}`);
         } catch (error) {
           this.logger.error('mail error', error.message);
         }
