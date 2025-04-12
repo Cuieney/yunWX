@@ -99,7 +99,7 @@ export class APIController {
                 ArticleCount: 1,
                 Articles: [
                   {
-                    Title: 'AI｜点击开始卜卦',
+                    Title: '助力邀请成功｜点击开始卜卦',
                     Description: `${response.data.message}`,
                     PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
                     Url: `${WebUrl}?openId=${FromUserName}`,
@@ -115,7 +115,7 @@ export class APIController {
               ArticleCount: 1,
               Articles: [
                 {
-                  Title: 'AI｜点击此处开始卜卦',
+                  Title: '助力邀请成功｜点击开始卜卦',
                   Description: `${response.data.message}`,
                   PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
                   Url: `${WebUrl}?openId=${FromUserName}`,
