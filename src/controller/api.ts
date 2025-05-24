@@ -44,6 +44,7 @@ export class APIController {
     const { Event, ToUserName, FromUserName, MsgType, Content, CreateTime } =
       message;
     this.logger.info('receiveMessage', JSON.stringify(message));
+    let url = WebUrl
     try {
       const response = await axios.post(
         'https://wt5iw4.laf.run/gongzhonghaologin',
@@ -58,6 +59,7 @@ export class APIController {
         }
       );
       this.logger.info('POST Response:', response.data);
+      url = response.data.url || WebUrl
     } catch (error) {
       this.logger.info('Error with POST request:', error);
     }
@@ -102,7 +104,7 @@ export class APIController {
                     Title: '助力邀请成功｜点击开始卜卦',
                     Description: `${response.data.message}`,
                     PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
-                    Url: `${WebUrl}?openId=${FromUserName}`,
+                    Url: `${url}?openId=${FromUserName}`,
                   },
                 ],
               })
@@ -118,7 +120,7 @@ export class APIController {
                   Title: '助力邀请成功｜点击开始卜卦',
                   Description: `${response.data.message}`,
                   PicUrl: 'https://wt5iw4-iching.oss.laf.run/WechatIMG279.jpeg',
-                  Url: `${WebUrl}?openId=${FromUserName}`,
+                  Url: `${url}?openId=${FromUserName}`,
                 },
               ],
             }
